@@ -2,10 +2,8 @@ import itertools
 
 
 def to_cnf(expr):
-    """
-    Converts simple expressions to CNF.
-    Currently handles implication (->) and biconditional (<->).
-    """
+    # Converts simple expressions to CNF.
+    # Currently handles implication (->) and biconditional (<->).
     if '->' in expr:
         a, b = expr.split('->')
         return f'(~{a.strip()} | {b.strip()})'
@@ -18,16 +16,12 @@ def to_cnf(expr):
 
 
 def parse_clause(clause):
-    """
-    Parses a single clause like '(~p | q)' into a set of literals: {'~p', 'q'}.
-    """
+    # Parses a single clause like '(~p | q)' into a set of literals: {'~p', 'q'}.
     return set(token.strip() for token in clause.strip('()').split('|'))
 
 
 def negate(expr):
-    """
-    Negates a proposition. If already negated, removes the negation.
-    """
+    # Negates a proposition. If already negated, removes the negation.
     if expr.startswith('~'):
         return expr[1:]
     else:
@@ -35,9 +29,7 @@ def negate(expr):
 
 
 def resolve(ci, cj):
-    """
-    Applies resolution rule on two clauses. Returns a set of new clauses.
-    """
+    # Applies resolution rule on two clauses. Returns a set of new clauses.
     resolvents = set()
     for di in ci:
         for dj in cj:
@@ -48,10 +40,8 @@ def resolve(ci, cj):
 
 
 def pl_resolution(kb, alpha):
-    """
-    Propositional Logic Resolution Algorithm.
-    Returns True if alpha is entailed by the knowledge base (kb).
-    """
+    # Propositional Logic Resolution Algorithm.
+    # Returns True if alpha is entailed by the knowledge base (kb).
     clauses = set()
 
     for formula in kb:
