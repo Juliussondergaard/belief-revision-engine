@@ -1,27 +1,32 @@
+# logic_utils.py
+
 import itertools
+import re
 
 
 def to_cnf(expr):
-    # Converts simple expressions to CNF.
-    # Currently handles implication (->) and biconditional (<->).
-    if '->' in expr:
-        a, b = expr.split('->')
-        return f'(~{a.strip()} | {b.strip()})'
-    elif '<->' in expr:
-        a, b = expr.split('<->')
-        # A <-> B is equivalent to (A -> B) & (B -> A)
-        return f'(~{a.strip()} | {b.strip()}) & (~{b.strip()} | {a.strip()})'
-    else:
-        return expr
+    """
+    Converts simple logical expressions into CNF.
+    Supports implication (->) and biconditional (<->) transformations.
+    Simplified handling.
+    """
+    expr = expr.replace(' ', '')  # Remove spaces
+    expr = expr.replace('<->', '&(~')  # Handle biconditional loosely
+    expr = expr.replace('->', '|(~')   # Handle implication loosely
+    return expr  # Basic parsing (flat formulas)
 
 
 def parse_clause(clause):
-    # Parses a single clause like '(~p | q)' into a set of literals: {'~p', 'q'}.
+    """
+    Parses a clause like '(~p | q)' into a set of literals: {'~p', 'q'}.
+    """
     return set(token.strip() for token in clause.strip('()').split('|'))
 
 
 def negate(expr):
-    # Negates a proposition. If already negated, removes the negation.
+    """
+    Negates a proposition. If already negated, removes the negation.
+    """
     if expr.startswith('~'):
         return expr[1:]
     else:
@@ -29,7 +34,9 @@ def negate(expr):
 
 
 def resolve(ci, cj):
-    # Applies resolution rule on two clauses. Returns a set of new clauses.
+    """
+    Applies the resolution rule between two clauses.
+    """
     resolvents = set()
     for di in ci:
         for dj in cj:
@@ -40,10 +47,11 @@ def resolve(ci, cj):
 
 
 def pl_resolution(kb, alpha):
-    # Propositional Logic Resolution Algorithm.
-    # Returns True if alpha is entailed by the knowledge base (kb).
+    """
+    Propositional Logic Resolution Algorithm.
+    Returns True if alpha is entailed by the knowledge base (kb).
+    """
     clauses = set()
-
     for formula in kb:
         cnf = to_cnf(formula)
         clauses.add(frozenset(parse_clause(cnf)))
