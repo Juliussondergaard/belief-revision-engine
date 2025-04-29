@@ -6,14 +6,23 @@ import re
 
 def to_cnf(expr):
     """
-    Converts simple logical expressions into CNF.
-    Supports implication (->) and biconditional (<->) transformations.
-    Simplified handling.
+    Very basic to_cnf function.
+    Supports:
+    - Implication (p -> q)
+    - Biconditional (p <-> q)
+    - No nesting handling
+    Assumes input like 'p', 'p -> q', 'p <-> q'
     """
-    expr = expr.replace(' ', '')  # Remove spaces
-    expr = expr.replace('<->', '&(~')  # Handle biconditional loosely
-    expr = expr.replace('->', '|(~')   # Handle implication loosely
-    return expr  # Basic parsing (flat formulas)
+    expr = expr.replace(' ', '')  # Fjern mellemrum
+
+    if '<->' in expr:
+        a, b = expr.split('<->')
+        return f"(~{a} | {b}) & (~{b} | {a})"
+    elif '->' in expr:
+        a, b = expr.split('->')
+        return f"(~{a} | {b})"
+    else:
+        return expr
 
 
 def parse_clause(clause):
