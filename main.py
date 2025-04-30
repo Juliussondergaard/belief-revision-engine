@@ -1,5 +1,3 @@
-# main.py
-
 from belief_base import BeliefBase
 
 
