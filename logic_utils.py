@@ -13,7 +13,7 @@ def to_cnf(expr):
     - No nesting handling
     Assumes input like 'p', 'p -> q', 'p <-> q'
     """
-    expr = expr.replace(' ', '')  # Fjern mellemrum
+    expr = expr.replace(' ', '')  # Remove spaces
 
     if '<->' in expr:
         a, b = expr.split('<->')

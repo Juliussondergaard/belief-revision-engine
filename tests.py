@@ -4,9 +4,7 @@ from belief_base import BeliefBase
 
 
 def test_success_postulate():
-    """
-    Success Postulate: After revising with φ, φ should be in the belief base.
-    """
+    # Success Postulate: After revising with φ, φ should be in the belief base.
     print("🔹 Testing SUCCESS postulate...")
     bb = BeliefBase(['p'])
     bb.revise('q')

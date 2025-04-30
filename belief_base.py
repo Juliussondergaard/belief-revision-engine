@@ -6,16 +6,12 @@ import random
 
 
 class BeliefBase:
-    """
-    A class representing a belief base with expansion, contraction, revision, and entailment operations.
-    Beliefs are stored as (formula, priority) tuples.
-    """
+    # A class representing a belief base with expansion, contraction, revision, and entailment operations.
+    # Beliefs are stored as (formula, priority) tuples.
 
     def __init__(self, initial_beliefs=None):
-        """
-        Initializes the belief base with an optional list of formulas.
-        Beliefs are given default priority 1.
-        """
+        # Initializes the belief base with an optional list of formulas.
+        # Beliefs are given default priority 1.
         if initial_beliefs is None:
             self.beliefs = []
         else:
@@ -25,29 +21,23 @@ class BeliefBase:
         return f"BeliefBase({self.beliefs})"
 
     def expand(self, formula, priority=1):
-        """
-        Expands the belief base with a new formula and optional priority.
-        """
+        # Expands the belief base with a new formula and optional priority.
         if not isinstance(formula, str):
             raise ValueError(f"Invalid formula: {formula}")
 
-        formula = formula.strip()  # <--- this line trims spaces at the beginning and end
+        formula = formula.strip()  # Trims spaces at the beginning and end
 
         if not any(belief[0] == formula for belief in self.beliefs):
             self.beliefs.append((formula, priority))
 
     def entails(self, formula):
-        """
-        Checks if the formula logically follows from the current belief base.
-        """
+        # Checks if the formula logically follows from the current belief base.
         formulas = [belief[0] for belief in self.beliefs]
         return pl_resolution(formulas, formula)
 
     def contract(self, formula):
-        """
-        Contracts the belief base using partial meet contraction with priority-based selection.
-        Returns the revised belief base.
-        """
+        # Contracts the belief base using partial meet contraction with priority-based selection.
+        # Returns the revised belief base.
         if not self.entails(formula):
             return self
 
@@ -70,24 +60,18 @@ class BeliefBase:
         return self
 
     def revise(self, formula, priority=1):
-        """
-        Revises the belief base by contracting ¬formula and expanding formula.
-        """
+        # Revises the belief base by contracting ¬formula and expanding formula.
         neg_formula = negate(formula)
         self.contract(neg_formula)
         self.expand(formula, priority)
 
     def is_consistent(self):
-        """
-        Checks if the belief base is logically consistent (no contradictions).
-        """
+        # Checks if the belief base is logically consistent (no contradictions).
         formulas = [belief[0] for belief in self.beliefs]
         return not pl_resolution(formulas, 'False')
 
     def _find_inconsistent_subsets(self, formula):
-        """
-        Finds minimal subsets of beliefs which, when removed, break entailment of the formula.
-        """
+        # Finds minimal subsets of beliefs which, when removed, break entailment of the formula.
         inconsistent_subsets = []
         for i in range(1 << len(self.beliefs)):
             subset = [self.beliefs[j]
@@ -112,10 +96,8 @@ class BeliefBase:
         return minimal_subsets
 
     def _selection_function(self, subsets):
-        """
-        Selects subsets to remove based on minimal priority impact.
-        Returns the subset(s) whose removal would result in minimal priority loss.
-        """
+        # Selects subsets to remove based on minimal priority impact.
+        # Returns the subset(s) whose removal would result in minimal priority loss.
         if not subsets:
             return []
 
