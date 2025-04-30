@@ -46,26 +46,28 @@ class BeliefBase:
     def contract(self, formula):
         """
         Contracts the belief base using partial meet contraction with priority-based selection.
+        Returns the revised belief base.
         """
         if not self.entails(formula):
-            return
+            return self
 
+        # Find all minimal subsets that need to be removed
         inconsistent_subsets = self._find_inconsistent_subsets(formula)
 
         if not inconsistent_subsets:
             self.beliefs = []
-            return
+            return self
 
+        # Select subset based on priorities
         selected_subsets = self._selection_function(inconsistent_subsets)
 
         if selected_subsets:
-            beliefs_to_remove = set(
-                itertools.chain.from_iterable(selected_subsets))
+            beliefs_to_remove = set(itertools.chain.from_iterable(selected_subsets))
             self.beliefs = [
                 belief for belief in self.beliefs if belief[0] not in beliefs_to_remove
             ]
-        else:
-            self.beliefs = []
+        
+        return self
 
     def revise(self, formula, priority=1):
         """
@@ -111,23 +113,29 @@ class BeliefBase:
 
     def _selection_function(self, subsets):
         """
-        Selects one subset with maximum total priority.
-        Randomly breaks ties.
+        Selects subsets to remove based on minimal priority impact.
+        Returns the subset(s) whose removal would result in minimal priority loss.
         """
         if not subsets:
             return []
 
+        # Calculate priority impact for each subset
         subset_priorities = {}
         for subset in subsets:
+            # Sum the priorities of beliefs in this subset
             total_priority = sum(
-                belief[1] for belief in self.beliefs if belief[0] in subset)
+                belief[1] for belief in self.beliefs 
+                if belief[0] in subset
+            )
             subset_priorities[frozenset(subset)] = total_priority
 
-        max_priority = max(subset_priorities.values())
+        # Find subset(s) with minimum total priority
+        min_priority = min(subset_priorities.values())
         best_subsets = [
             set(subset) for subset, priority in subset_priorities.items()
-            if priority == max_priority
+            if priority == min_priority
         ]
 
+        # If multiple subsets have the same priority, choose one randomly
         selected_subset = random.choice(best_subsets)
         return [selected_subset]

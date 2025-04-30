@@ -30,8 +30,25 @@ def demonstrate_belief_operations():
     print("After revision:", bb.beliefs)
 
 
+def test_priority_handling():
+    bb = BeliefBase()
+    
+    # Add beliefs with different priorities
+    bb.expand('p', priority=3)
+    bb.expand('q', priority=1)
+    bb.expand('p -> q', priority=2)
+    
+    # Contract 'q' - should remove 'q' (priority 1) instead of 'p' (priority 3)
+    bb.contract('q')
+    
+    # Check that high-priority belief remains
+    assert bb.entails('p')
+    print("Priority handling test passed")
+
+
 def main():
     demonstrate_belief_operations()
+    test_priority_handling()
 
 
 if __name__ == '__main__':
