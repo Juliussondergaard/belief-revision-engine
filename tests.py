@@ -14,26 +14,41 @@ def test_success_postulate():
 
 
 def test_inclusion_postulate():
-    """
-    Inclusion Postulate: After revision, the new belief base should include the original base (except for inconsistencies).
-    """
+    # Testing INCLUSION postulate...
     print("🔹 Testing INCLUSION postulate...")
+
+    # Original belief base
     bb = BeliefBase(['p', 'p -> q'])
-    before = set([belief[0] for belief in bb.beliefs])
+
+    # Expanded base (B + q)
+    bb_expanded = BeliefBase(['p', 'p -> q'])  # Clone of original
+    bb_expanded.expand('q')
+    expanded = set([belief[0] for belief in bb_expanded.beliefs])
+
+    # Revised base (B * q)
     bb.revise('q')
-    after = set([belief[0] for belief in bb.beliefs])
-    return before.issubset(after)
+    revised = set([belief[0] for belief in bb.beliefs])
+
+    # Inclusion postulate: B * q ⊆ B + q
+    return revised.issubset(expanded)
 
 
 def test_vacuity_postulate():
-    """
-    Vacuity Postulate: If the formula is not in conflict, revision acts like expansion.
-    """
+    # Testing VACUITY postulate...
     print("🔹 Testing VACUITY postulate...")
-    bb = BeliefBase(['p'])
-    bb.revise('p')
-    beliefs = [belief[0] for belief in bb.beliefs if belief[0] == 'p']
-    return 'p' in beliefs and beliefs.count('p') == 1
+
+    # Belief base that does not entail ~q
+    bb1 = BeliefBase(['p'])  # Does not contradict q
+    bb2 = BeliefBase(['p'])  # Clone for expansion
+
+    bb1.revise('q')  # Revision: B * q
+    bb2.expand('q')  # Expansion: B + q
+
+    revised = set([belief[0] for belief in bb1.beliefs])
+    expanded = set([belief[0] for belief in bb2.beliefs])
+
+    # Should be equal if ~q was not implied by B
+    return revised == expanded
 
 
 def test_consistency_postulate():

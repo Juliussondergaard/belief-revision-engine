@@ -1,10 +1,8 @@
-# mastermind.py
-
 import random
 import itertools
 
-# Green, Red, Yellow, Blue, White, Black
-COLORS = ['G', 'R', 'Y', 'B', 'W', 'K']
+# Green, Red, Yellow, Orange, White, Black
+COLORS = ['G', 'R', 'Y', 'O', 'W', 'B']
 
 
 def generate_all_codes():
@@ -40,7 +38,7 @@ def parse_code_input(code_str):
     code = code_str.upper().strip().split()
     if len(code) != 4 or any(c not in COLORS for c in code):
         raise ValueError(
-            "Invalid code. Use exactly 4 colors: G R Y B W K (separated by spaces).")
+            "Invalid code. Use exactly 4 colors: G R Y O W B (separated by spaces).")
     return tuple(code)
 
 
@@ -56,7 +54,7 @@ def mastermind_game():
     Runs the Mastermind game where the user sets a secret code.
     """
     print("\n🎮 Welcome to Mastermind! 🎮")
-    print("Colors: G=Green, R=Red, Y=Yellow, B=Blue, W=White, K=Black")
+    print("Colors: G=Green, R=Red, Y=Yellow, O=Orange, W=White, B=Black")
     print("Please think of a secret code and enter it.")
     print("Example input: G R Y B")
     print("-----------------------------------------------------------\n")
