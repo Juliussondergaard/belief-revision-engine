@@ -1,11 +1,9 @@
-# test_belief_base.py
-
 from belief_base import BeliefBase
 
 
 def test_success_postulate():
     # Success Postulate: After revising with φ, φ should be in the belief base.
-    print("🔹 Testing SUCCESS postulate...")
+    print("Testing SUCCESS postulate...")
     bb = BeliefBase(['p'])
     bb.revise('q')
     return 'q' in [belief[0] for belief in bb.beliefs]
@@ -13,7 +11,7 @@ def test_success_postulate():
 
 def test_inclusion_postulate():
     # Testing INCLUSION postulate...
-    print("🔹 Testing INCLUSION postulate...")
+    print("Testing INCLUSION postulate...")
 
     # Original belief base
     bb = BeliefBase(['p', 'p -> q'])
@@ -33,7 +31,7 @@ def test_inclusion_postulate():
 
 def test_vacuity_postulate():
     # Testing VACUITY postulate...
-    print("🔹 Testing VACUITY postulate...")
+    print("Testing VACUITY postulate...")
 
     # Belief base that does not entail ~q
     bb1 = BeliefBase(['p'])  # Does not contradict q
@@ -50,20 +48,14 @@ def test_vacuity_postulate():
 
 
 def test_consistency_postulate():
-    """
-    Consistency Postulate: If the formula is consistent, revision results in a consistent belief base.
-    """
-    print("🔹 Testing CONSISTENCY postulate...")
+    print("Testing CONSISTENCY postulate...")
     bb = BeliefBase(['p', '~p'])
     bb.revise('q')
     return bb.is_consistent()
 
 
 def test_extensionality_postulate():
-    """
-    Extensionality Postulate: If φ and ψ are logically equivalent, then revising with φ or ψ should give the same results.
-    """
-    print("🔹 Testing EXTENSIONALITY postulate...")
+    print("Testing EXTENSIONALITY postulate...")
     bb1 = BeliefBase(['p'])
     bb2 = BeliefBase(['p'])
     bb1.revise('q -> r')
@@ -73,9 +65,6 @@ def test_extensionality_postulate():
 
 
 def run_all_tests():
-    """
-    Runs all AGM postulate tests and prints results.
-    """
     print("\n===== AGM Postulates Tests =====")
     print("Success Postulate:", "✅ Pass" if test_success_postulate() else "❌ Fail")
     print("Inclusion Postulate:",

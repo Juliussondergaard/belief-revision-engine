@@ -6,16 +6,11 @@ COLORS = ['G', 'R', 'Y', 'O', 'W', 'B']
 
 
 def generate_all_codes():
-    """
-    Generates all possible 4-color codes.
-    """
+    # Generates all possible 4 colors
     return list(itertools.product(COLORS, repeat=4))
 
 
 def feedback(code, guess):
-    """
-    Given a secret code and a guess, returns (black_pegs, white_pegs).
-    """
     black_pegs = sum(c == g for c, g in zip(code, guess))
 
     # Count colors in code and guess
@@ -32,9 +27,7 @@ def feedback(code, guess):
 
 
 def parse_code_input(code_str):
-    """
-    Parses the user's input into a tuple of colors.
-    """
+    # Parses the user's input into a tuple of colors.
     code = code_str.upper().strip().split()
     if len(code) != 4 or any(c not in COLORS for c in code):
         raise ValueError(
@@ -43,16 +36,12 @@ def parse_code_input(code_str):
 
 
 def format_guess(guess):
-    """
-    Formats a guess tuple into a string for displaying.
-    """
+    # Formats a guess tuple into a string for displaying.
     return ' '.join(guess)
 
 
 def mastermind_game():
-    """
-    Runs the Mastermind game where the user sets a secret code.
-    """
+    # Runs the Mastermind game where the user sets a secret code.
     print("\n🎮 Welcome to Mastermind! 🎮")
     print("Colors: G=Green, R=Red, Y=Yellow, O=Orange, W=White, B=Black")
     print("Please think of a secret code and enter it.")
@@ -83,7 +72,7 @@ def mastermind_game():
             f"Feedback: {black_pegs} black peg(s), {white_pegs} white peg(s)")
 
         if black_pegs == 4:
-            print(f"\n✅ AI has cracked your code in {round_number} rounds! 🎉")
+            print(f"\nAI has cracked your code in {round_number} rounds!")
             break
 
         # Belief Revision: filter possible codes

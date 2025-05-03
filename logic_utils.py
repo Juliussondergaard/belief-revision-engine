@@ -3,15 +3,8 @@ import re
 
 
 def to_cnf(expr):
-    """
-    Very basic to_cnf function.
-    Supports:
-    - Implication (p -> q)
-    - Biconditional (p <-> q)
-    - No nesting handling
-    Assumes input like 'p', 'p -> q', 'p <-> q'
-    """
-    expr = expr.replace(' ', '')  # Remove spaces
+    # to CNF form
+    expr = expr.replace(' ', '')
 
     if '<->' in expr:
         a, b = expr.split('<->')
@@ -24,16 +17,12 @@ def to_cnf(expr):
 
 
 def parse_clause(clause):
-    """
-    Parses a clause like '(~p | q)' into a set of literals: {'~p', 'q'}.
-    """
+    # Into literals
     return set(token.strip() for token in clause.strip('()').split('|'))
 
 
 def negate(expr):
-    """
-    Negates a proposition. If already negated, removes the negation.
-    """
+    # Negates to proposition
     if expr.startswith('~'):
         return expr[1:]
     else:
@@ -41,9 +30,7 @@ def negate(expr):
 
 
 def resolve(ci, cj):
-    """
-    Applies the resolution rule between two clauses.
-    """
+    # Apply resolution
     resolvents = set()
     for di in ci:
         for dj in cj:
@@ -54,10 +41,7 @@ def resolve(ci, cj):
 
 
 def pl_resolution(kb, alpha):
-    """
-    Propositional Logic Resolution Algorithm.
-    Returns True if alpha is entailed by the knowledge base (kb).
-    """
+    # Propositional logic resolution algorithm.
     clauses = set()
     for formula in kb:
         cnf = to_cnf(formula)
