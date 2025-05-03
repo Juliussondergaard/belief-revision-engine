@@ -1,5 +1,3 @@
-# belief_base.py
-
 from logic_utils import pl_resolution, negate
 import itertools
 import random
