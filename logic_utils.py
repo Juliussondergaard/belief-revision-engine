@@ -1,5 +1,3 @@
-# logic_utils.py
-
 import itertools
 import re
 

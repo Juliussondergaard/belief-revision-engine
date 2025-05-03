@@ -2,14 +2,14 @@ from belief_base import BeliefBase
 
 
 def demonstrate_belief_operations():
-    print("\n=== Belief Base Operations Demo ===")
+    print("\n=== Belief base ===")
 
     # Create initial belief base
     print("\n1. Creating initial belief base with 'p' and 'p -> q'")
     bb = BeliefBase(['p', 'p -> q'])
     print("Initial beliefs:", bb.beliefs)
 
-    # Test entailment
+    # Test
     print("\n2. Testing entailment")
     print("Does it entail 'q'?", bb.entails('q'))
     print("Does it entail 'r'?", bb.entails('r'))
